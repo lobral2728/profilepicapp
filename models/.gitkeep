@@ -1,0 +1,8 @@
+# This directory contains the CNN model files
+# Place your trained model here:
+#   - profile_classifier.h5 (HDF5 format)
+#   - profile_classifier.keras (Keras format)
+#
+# Model requirements:
+#   - Input shape: (128, 128, 3) - RGB images
+#   - Output shape: (3,) - [animal, avatar, human]

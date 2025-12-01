@@ -1,0 +1,17 @@
+# Terraform Environment Variables (EXAMPLE)
+# Copy this file to set-env.ps1 and fill in your actual subscription ID
+# 
+# Usage:
+#   In PowerShell: . .\set-env.ps1
+#   (The dot-space-dot means "source" the file in the current session)
+
+# Azure Subscription ID
+$env:ARM_SUBSCRIPTION_ID = "your-azure-subscription-id"
+
+# Optional: You can also set these if you prefer environment variables over terraform.tfvars
+# $env:ARM_CLIENT_ID = "your-client-id"
+# $env:ARM_CLIENT_SECRET = "your-client-secret"
+# $env:ARM_TENANT_ID = "your-tenant-id"
+
+Write-Host "✅ Azure environment variables set for Terraform" -ForegroundColor Green
+Write-Host "   ARM_SUBSCRIPTION_ID: $env:ARM_SUBSCRIPTION_ID" -ForegroundColor Cyan

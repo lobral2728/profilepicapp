@@ -1,0 +1,32 @@
+# Azure Configuration
+subscription_id      = "your-azure-subscription-id"
+resource_group_name  = "profilepic-rg"
+location            = "East US"
+app_name            = "profilepicapp"
+
+# App Service Configuration
+app_service_sku = "B1"  # Options: F1 (Free), B1 (Basic), S1 (Standard), P1V2 (Premium)
+environment     = "production"
+
+# Flask Configuration
+flask_secret_key = "your-generated-flask-secret-key-here"
+
+# Azure AD / Entra ID Configuration
+client_id     = "your-application-client-id"
+client_secret = "your-client-secret-value"
+tenant_id     = "your-directory-tenant-id"
+
+# Optional Features
+enable_application_insights = true
+enable_staging_slot        = false
+
+# CORS (if needed for API calls from other domains)
+allowed_origins = []
+
+# Tags
+tags = {
+  Environment = "Production"
+  ManagedBy   = "Terraform"
+  Application = "ProfilePicApp"
+  Owner       = "Your Name"
+}

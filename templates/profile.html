@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Entra Profile Picture App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #0078d4;
+            margin: 0 auto 30px;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .user-info {
+            margin-bottom: 30px;
+        }
+        .user-info h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .user-info p {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            background: #d32f2f;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #b71c1c;
+        }
+        .btn-primary {
+            background: #0078d4;
+        }
+        .btn-primary:hover {
+            background: #005a9e;
+        }
+        .action-buttons {
+            margin-top: 20px;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        #testModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .test-result {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .test-result h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .status-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-failed {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .status-error {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0078d4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Entra Profile</h1>
+        
+        <img src="{{ url_for('profile_photo') }}" alt="Profile Picture" class="profile-photo" 
+             onerror="this.src='https://via.placeholder.com/200?text=No+Photo'">
+        
+        <div class="user-info">
+            <h2>{{ user.displayName }}</h2>
+            <p><span class="info-label">Email:</span> {{ user.mail or user.userPrincipalName }}</p>
+            {% if user.jobTitle %}
+            <p><span class="info-label">Job Title:</span> {{ user.jobTitle }}</p>
+            {% endif %}
+            {% if user.officeLocation %}
+            <p><span class="info-label">Office:</span> {{ user.officeLocation }}</p>
+            {% endif %}
+            <p><span class="info-label">User ID:</span> {{ user.id }}</p>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{{ url_for('gallery') }}" class="btn btn-primary">📸 Gallery View</a>
+            <a href="{{ url_for('browse_profiles', index=0) }}" class="btn btn-primary">📄 Browse Profiles</a>
+            <button onclick="testClassifier()" class="btn btn-secondary">🔬 Test Classifier</button>
+            <a href="{{ url_for('logout') }}" class="btn">Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div id="testModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Classifier API Test Results</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="testResults">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Testing classifier API (may take up to 90 seconds)...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testClassifier() {
+            document.getElementById('testModal').style.display = 'block';
+            document.getElementById('testResults').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Testing classifier API (may take up to 90 seconds)...</p>
+                </div>
+            `;
+            
+            fetch('/debug/test-classifier')
+                .then(response => response.json())
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(error => {
+                    document.getElementById('testResults').innerHTML = `
+                        <div class="test-result">
+                            <h4 class="status-error">Error</h4>
+                            <p>${error.message}</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function displayResults(data) {
+            let html = `<h4>Classifier URL: ${data.classifier_url}</h4><hr>`;
+            
+            for (const [testName, result] of Object.entries(data.tests)) {
+                const statusClass = result.status === 'success' ? 'status-success' : 
+                                  result.status === 'failed' ? 'status-failed' : 'status-error';
+                
+                html += `
+                    <div class="test-result">
+                        <h4>${testName.replace(/_/g, ' ').toUpperCase()}</h4>
+                        <p><strong>Status:</strong> <span class="${statusClass}">${result.status}</span></p>
+                `;
+                
+                if (result.status_code) {
+                    html += `<p><strong>HTTP Status:</strong> ${result.status_code}</p>`;
+                }
+                
+                if (result.error) {
+                    html += `<p><strong>Error:</strong></p><pre>${escapeHtml(result.error)}</pre>`;
+                }
+                
+                if (result.response) {
+                    const responseText = typeof result.response === 'object' ? 
+                        JSON.stringify(result.response, null, 2) : 
+                        result.response.substring(0, 500);
+                    html += `<p><strong>Response:</strong></p><pre>${escapeHtml(responseText)}</pre>`;
+                }
+                
+                if (result.test_image) {
+                    html += `<p><strong>Test Image:</strong> ${result.test_image}</p>`;
+                }
+                
+                html += `</div>`;
+            }
+            
+            document.getElementById('testResults').innerHTML = html;
+        }
+
+        function closeModal() {
+            document.getElementById('testModal').style.display = 'none';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('testModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

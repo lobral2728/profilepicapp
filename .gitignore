@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure
+.azure/
+
+# Logs
+*.log
+classifier-logs/
+classifier-logs2/
+latest_logs/
+
+# Deployment artifacts
+*.bak
+*.tmp
+*.orig
+*.db
+*.sqlite3
+*.pid
+*.out
+*.egg-info/
+.ipynb_checkpoints/
+
+# ML Models (large files)
+models/*.h5
+models/*.keras
+models/*.pb
+models/*.onnx
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
+terraform/*.tfplan
+terraform/crash.log
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+terraform/set-env.ps1
